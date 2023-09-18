@@ -3,19 +3,14 @@ const app = express();
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const port = process.env.port || 8000;
-const { addUser } = require("./controllers/UserController");
+const userRoute = require("./routes/user");
 
 //middlewares
 app.use(bodyParser.json());
-
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/api/user", userRoute);
 
-app.use("/api/test", (req, res) => {
-  res.send({
-    name: "Anit",
-  });
-});
-
+// db
 mongoose.connect("mongodb://localhost:27017/custom-calculator");
 const db = mongoose.connection;
 

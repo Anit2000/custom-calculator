@@ -1,5 +1,18 @@
+import { useState } from "react";
 import { Logo } from "../assets/Icons";
 const RegisterForm = () => {
+  const [user, setUser] = useState(null);
+  const registerUser = (e) => {
+    e.preventDefault();
+    let formData = new URLSearchParams(new FormData(e.target)).toString();
+    fetch("/api/user", {
+      method: "POST",
+      body: formData,
+    })
+      .then((res) => res.text())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -11,7 +24,12 @@ const RegisterForm = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            className="space-y-6"
+            action="#"
+            method="POST"
+            onSubmit={registerUser}
+          >
             <div>
               <label
                 htmlFor="name"
@@ -68,7 +86,7 @@ const RegisterForm = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 h-[50px]"
               >
                 Register Now
               </button>
