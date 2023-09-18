@@ -19,7 +19,7 @@ const RegisterForm = () => {
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <Logo class="w-[50px] h-[50px] mx-auto" />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Create Your Account
+            Create Your New Account
           </h2>
         </div>
 
