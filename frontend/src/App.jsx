@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import RegisterForm from "./components/RegisterForm";
-import LoginForm from "./components/LoginForm";
 function App() {
   return (
     <>
       <RegisterForm />
-      <LoginForm />
     </>
   );
 }

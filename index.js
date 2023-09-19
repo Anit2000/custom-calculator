@@ -4,11 +4,14 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const port = process.env.port || 8000;
 const userRoute = require("./routes/user");
+const cookie = require("cookie-parser");
+require("dotenv").config();
 
 //middlewares
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/api/user", userRoute);
+app.use(cookie());
+app.use("/api", userRoute);
 
 // db
 mongoose.connect("mongodb://localhost:27017/custom-calculator");

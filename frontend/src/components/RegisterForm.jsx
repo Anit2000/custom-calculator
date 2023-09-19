@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { Logo } from "../assets/Icons";
 const RegisterForm = () => {
-  const [user, setUser] = useState(null);
   const registerUser = (e) => {
     e.preventDefault();
-    let formData = new URLSearchParams(new FormData(e.target)).toString();
-    fetch("/api/user", {
+    let formData = {
+      email: e.target.querySelector('[name="email"]').value,
+      password: e.target.querySelector('[name="password"]').value,
+    };
+    console.log(formData);
+    fetch("/api/register", {
       method: "POST",
-      body: formData,
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(formData),
     })
       .then((res) => res.text())
       .then((data) => console.log(data))
@@ -32,31 +38,15 @@ const RegisterForm = () => {
           >
             <div>
               <label
-                htmlFor="name"
+                htmlFor="email"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                User name
+                Email
               </label>
               <div className="mt-2">
                 <input
-                  name="name"
-                  type="text"
-                  required
-                  className="block p-[10px] w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Brand Url
-              </label>
-              <div className="mt-2">
-                <input
-                  name="brand-url"
-                  type="url"
+                  name="email"
+                  type="email"
                   required
                   className="block p-[10px] w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
