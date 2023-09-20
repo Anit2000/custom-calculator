@@ -12,11 +12,22 @@ const createToken = (id) => {
   return token;
 };
 const createUser = async (req, res) => {
-  console.log(req.body);
-  let user = await new User(req.body).save();
-  res.cookie(createToken(user._id.valueOf())).status(201).json(user);
+  let data = await new User(req.body).save();
+  res
+    .cookie("cred_jwt", createToken(data._id.valueOf()))
+    .status(201)
+    .json({
+      user: {
+        email: data.email,
+      },
+    });
 };
 
+const authenticateUser = async (req, res) => {
+  let jwt = req.cred_jwt;
+  console.log(jwt);
+};
 module.exports = {
   createUser,
+  authenticateUser,
 };
