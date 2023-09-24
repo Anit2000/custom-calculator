@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginForm from "./components/LoginForm";
 import { AuthProvider } from "./helpers/authContext";
-import CalculatorComponent from "./components/CalculatorComponent";
+import Dashboard from "./components/Dashboard";
 import PrivateRoute from "./helpers/privateRoute";
+import UserForms from "./components/UserForms";
 
 function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<LoginForm />} />
+          <Route path="/" element={<UserForms />} />
           <Route path="/" element={<PrivateRoute />}>
-            <Route path="cal" element={<CalculatorComponent />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Route>
         </Routes>
       </BrowserRouter>

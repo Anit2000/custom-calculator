@@ -1,13 +1,16 @@
 import { useState } from "react";
 import { Logo } from "../assets/Icons";
+import { useAuth } from "../helpers/authContext";
+import { useNavigate } from "react-router-dom";
 const RegisterForm = () => {
+  let { login, user } = useAuth();
+  const navigate = useNavigate();
   const registerUser = (e) => {
     e.preventDefault();
     let formData = {
       email: e.target.querySelector('[name="email"]').value,
       password: e.target.querySelector('[name="password"]').value,
     };
-    console.log(formData);
     fetch("/api/register", {
       method: "POST",
       headers: {
@@ -15,8 +18,11 @@ const RegisterForm = () => {
       },
       body: JSON.stringify(formData),
     })
-      .then((res) => res.text())
-      .then((data) => console.log(data))
+      .then((res) => res.json())
+      .then((data) => {
+        login(data);
+        user ? navigate("/dashboard", true) : "";
+      })
       .catch((err) => console.log(err));
   };
   return (

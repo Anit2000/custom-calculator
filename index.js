@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const port = process.env.port || 8000;
 const userRoute = require("./routes/user");
 const cookie = require("cookie-parser");
+const { authenticateUser } = require("./controller/user");
 require("dotenv").config();
 
 //middlewares

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -12,7 +12,15 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
   };
-
+  useEffect(() => {
+    fetch("/api")
+      .then((res) => res.json())
+      .then((data) => {
+        data.ok ? setUser(data) : setUser(null);
+        console.log(user, data);
+      })
+      .catch((err) => console.log(err, "error catch"));
+  }, []);
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
       {children}

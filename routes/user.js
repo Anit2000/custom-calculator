@@ -6,5 +6,5 @@ router.post("/register", createUser);
 router.post("/login", (req, res) => {
   console.log(req.body);
 });
-router.get("/", authenticateUser);
+router.use("/", authenticateUser);
 module.exports = router;
