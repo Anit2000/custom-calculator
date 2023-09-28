@@ -1,6 +1,29 @@
 import { Logo } from "../assets/Icons";
-
+import { useAuth } from "../helpers/authContext";
+import { useNavigate } from "react-router-dom";
 const LoginForm = () => {
+  const { login, user } = useAuth();
+  const navigate = useNavigate();
+  const loginUser = (e) => {
+    e.preventDefault();
+    let formData = {
+      email: e.target.querySelector('[name="email"]').value,
+      password: e.target.querySelector('[name="password"]').value,
+    };
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        login(data);
+        user ? navigate("/dashboard", true) : "";
+      })
+      .catch((err) => console.log(err));
+  };
   return (
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -12,17 +35,22 @@ const LoginForm = () => {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6" action="#" method="POST">
+          <form
+            className="space-y-6"
+            action="#"
+            method="POST"
+            onSubmit={loginUser}
+          >
             <div>
               <label
                 htmlFor="name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                User name
+                Email
               </label>
               <div className="mt-2">
                 <input
-                  name="name"
+                  name="email"
                   type="text"
                   required
                   className="block p-[10px] w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"

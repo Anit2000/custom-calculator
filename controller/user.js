@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const createToken = (id) => {
   let token = jwt.sign(
@@ -40,7 +41,25 @@ const authenticateUser = (req, res, next) => {
     }
   );
 };
+const loginUser = async (req, res) => {
+  const data = req.body;
+  let user = await User.findOne({ email: data.email });
+  let verify = bcrypt.compare(data.password, user.password, (err, result) => {
+    if (!result) {
+      res.status(401).json({
+        ok: false,
+        message: "User did not match",
+      });
+    } else {
+      res.cookie("cred_jwt", createToken(user._id.valueOf())).status(200).json({
+        ok: true,
+        email: user.email,
+      });
+    }
+  });
+};
 module.exports = {
   createUser,
   authenticateUser,
+  loginUser,
 };

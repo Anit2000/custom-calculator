@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const bcrypt = require("bcrypt");
+const Settings = require("./settings");
+const Calculator = require("./calculator");
 
 const userSchema = new Schema({
   email: {
