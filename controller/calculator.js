@@ -12,7 +12,6 @@ const getProducts = async (req, res) => {
       fields: ["title", "handle", "id", "image"],
       page_info: page,
     });
-    console.log(products.nextPageParameters);
     res.status(201).json({
       ok: true,
       products: products,
@@ -30,24 +29,25 @@ const getProducts = async (req, res) => {
 };
 
 const searchProduct = async (req, res) => {
-  let query = req.query.search;
-  console.log(query);
+  let query = req.query.search.toLowerCase();
   let hasNext = true;
-  let page = "";
+  let page = null;
   try {
     while (hasNext) {
-      const products = await shopify.product.list({
-        limit: 10,
+      let requestOptions = {
+        limit: 250,
         fields: ["title", "handle", "id", "image"],
-        page_info: page,
-      });
-      let searchedProducts = products.filter((prd) =>
+      };
+      page ? requestOptions["page_info"] = page : "";
+      const products = await shopify.product.list(requestOptions);
+      let searchedProduct = products.find((prd) =>
         prd.title.toLowerCase().includes(query)
       );
-      if (searchedProducts.length == 0 && products.nextPageParameters) {
-        page = products.nextPageParameters;
+      if (!searchedProduct && products.nextPageParameters) {
+        page = products.nextPageParameters.page_info;
       } else {
         hasNext = false;
+        searchedProduct ? res.status(201).json({ok: true,...searchedProduct}) : res.status(400).json({ok : false});
       }
     }
   } catch (err) {
