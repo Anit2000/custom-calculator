@@ -11,6 +11,7 @@ const settingsSchema = new Schema({
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
+    required: true,
   },
 });
 const Settings = mongoose.model("settings", settingsSchema);

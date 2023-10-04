@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Input from "./Input";
 import { useAuth } from "../helpers/authContext";
 
@@ -8,7 +8,7 @@ const Settings = () => {
   let [accessToken, setAccessToken] = useState("");
   const saveSettings = async () => {
     let data = {
-      id: user.id,
+      user: user.id,
       domain,
       accessToken,
     };
@@ -21,12 +21,26 @@ const Settings = () => {
     }).then((res) => res.json());
     console.log(resData);
   };
+  const getSettings = async () => {
+    fetch("/api/getSettings")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok) {
+          setDomain(data.domain);
+          setAccessToken(data.accessToken);
+        }
+      });
+  };
+  useEffect(() => {
+    getSettings();
+  }, []);
   return (
     <div className="flex flex-col gap-4">
       <Input
         label="Domain"
         name="domain"
         type="text"
+        value={domain}
         placeholder="Enter store domain"
         onchange={(e) => {
           setDomain(e.target.value);
@@ -36,6 +50,7 @@ const Settings = () => {
         label="Access Token"
         type="password"
         name="accessToken"
+        value={accessToken}
         onchange={(e) => {
           setAccessToken(e.target.value);
         }}

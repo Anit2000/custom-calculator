@@ -4,7 +4,7 @@ import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 
 const UserForms = () => {
-  const [loginDisplay, setLoginDisplay] = useState(false);
+  const [loginDisplay, setLoginDisplay] = useState(true);
   return (
     <>
       {loginDisplay && <LoginForm />}

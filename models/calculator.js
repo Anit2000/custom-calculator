@@ -26,4 +26,4 @@ const calculatorSchema = new mongoose.Schema({
 
 const Calculator = mongoose.model("Calculator", calculatorSchema);
 
-module.exports = calculatorSchema;
+module.exports = Calculator;

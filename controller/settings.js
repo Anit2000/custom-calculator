@@ -1,4 +1,5 @@
 const Settings = require("../models/settings");
+const jwt = require("jsonwebtoken");
 
 const saveSettings = async (req, res) => {
   try {
@@ -12,4 +13,33 @@ const saveSettings = async (req, res) => {
       .status(400);
   }
 };
-module.exports = saveSettings;
+const getSettings = async (req, res) => {
+  let cookieId = req.cookies.cred_jwt;
+  let userId = await jwt.verify(
+    cookieId,
+    process.env.SECRET_TOKEN,
+    async function (err, decoded) {
+      if (err) {
+        res.json({
+          err: err.message,
+        });
+      } else {
+        return decoded.data;
+      }
+    }
+  );
+  let settings = await Settings.findOne({ user: userId });
+  if (settings) {
+    res.send({
+      ok: true,
+      domain: settings.domain,
+      accessToken: settings.accessToken,
+    });
+  } else {
+    res.send({
+      ok: false,
+      message: "no existing settings found",
+    });
+  }
+};
+module.exports = { saveSettings, getSettings };

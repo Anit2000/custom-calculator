@@ -5,10 +5,11 @@ const {
   authenticateUser,
   loginUser,
 } = require("../controller/user");
-const saveSettings = require("../controller/settings");
+const { saveSettings, getSettings } = require("../controller/settings");
 
 router.post("/register", createUser);
 router.post("/login", loginUser);
 router.post("/saveSettings", saveSettings);
+router.get("/getSettings", getSettings);
 router.use("/", authenticateUser);
 module.exports = router;

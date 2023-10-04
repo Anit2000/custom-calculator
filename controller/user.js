@@ -54,6 +54,7 @@ const loginUser = async (req, res) => {
       res.cookie("cred_jwt", createToken(user._id.valueOf())).status(200).json({
         ok: true,
         email: user.email,
+        id: user._id,
       });
     }
   });
