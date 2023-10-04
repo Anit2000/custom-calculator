@@ -59,7 +59,7 @@ const people = [
 const CalculatorsWrapper = () => {
   const [calcFormDisplay, setCalcFormDisplay] = useState(false);
   if (calcFormDisplay) {
-    return <CalculatorForm />;
+    return <CalculatorForm updateDisplay={setCalcFormDisplay}/>;
   }
   return (
     <>

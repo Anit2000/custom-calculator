@@ -6,11 +6,12 @@ import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 const DashBoard = () => {
   const { user } = useAuth();
+  console.log(user)
   const location = useLocation();
   console.log(location.pathname);
   return (
     <div className="antialiased">
-      <nav className="bg-white border-b border-white px-4 py-2.5 dark:bg-indigo-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
+      <nav className="bg-indigo-800 border-b border-white px-4 py-2.5 dark:bg-indigo-800 dark:border-gray-700 fixed left-0 right-0 top-0 z-50">
         <div className="flex flex-wrap justify-between items-center">
           <div className="flex justify-start items-center">
             <button
