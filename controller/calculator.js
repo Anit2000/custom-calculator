@@ -76,6 +76,7 @@ const addNewCalculator = async (req, res) => {
 const listCalculators = async (req, res) => {
   try {
     let calculators = await Calculator.find({});
+    console.log(calculators)
     res.json(calculators).status(200);
   } catch (err) {
     res
