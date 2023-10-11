@@ -1,4 +1,5 @@
 const Shopify = require("shopify-api-node");
+const mongoose = require("mongoose");
 const Calculator = require("../models/calculator");
 const shopify = new Shopify({
   shopName: "my-test-store-it-is",
@@ -76,8 +77,27 @@ const addNewCalculator = async (req, res) => {
 const listCalculators = async (req, res) => {
   try {
     let calculators = await Calculator.find({});
-    console.log(calculators)
     res.json(calculators).status(200);
+  } catch (err) {
+    res
+      .json({
+        ok: false,
+        message: err.message,
+      })
+      .status(201);
+  }
+};
+const getCalculator = async (req, res) => {
+  let id = new mongoose.Types.ObjectId(req.query.id);
+  try {
+    let calculator = await Calculator.findById(id);
+    console.log(calculator);
+    res
+      .json({
+        ok: true,
+        calculator,
+      })
+      .status(200);
   } catch (err) {
     res
       .json({
@@ -92,4 +112,5 @@ module.exports = {
   searchProduct,
   addNewCalculator,
   listCalculators,
+  getCalculator,
 };

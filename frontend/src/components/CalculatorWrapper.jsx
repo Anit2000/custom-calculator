@@ -7,7 +7,7 @@ import { getCalculators } from "../helpers/calculators";
 const CalculatorsWrapper = () => {
   const [addFormDisplay, setAddFormDisplay] = useState(false);
   const [calcList, setCalcList] = useState([]);
-  const [selectedCalc,updateSelectedCalc] = useState(null);
+  const [selectedCalc, updateSelectedCalc] = useState(null);
   async function getData() {
     let calcList = await getCalculators();
     setCalcList(calcList);
@@ -15,7 +15,13 @@ const CalculatorsWrapper = () => {
   useEffect(() => {
     getData();
   }, []);
-  if(selectedCalc) return <CalculatorForm id={selectedCalc} updateSelectedCalc={updateSelectedCalc}/>
+  if (selectedCalc)
+    return (
+      <CalculatorForm
+        id={selectedCalc}
+        updateSelectedCalc={updateSelectedCalc}
+      />
+    );
   return (
     <>
       {addFormDisplay && (
@@ -58,7 +64,11 @@ const CalculatorsWrapper = () => {
             </div>
             <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
               <div className="mt-1 flex items-center gap-x-3">
-                <button onClick={()=>{updateSelectedCalc(calc._id)}}>
+                <button
+                  onClick={() => {
+                    updateSelectedCalc(calc._id);
+                  }}
+                >
                   <Edit />
                 </button>
                 <button>
