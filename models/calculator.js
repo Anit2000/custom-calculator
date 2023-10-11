@@ -12,6 +12,9 @@ const sizeSchema = new mongoose.Schema({
   },
 });
 const calculatorSchema = new mongoose.Schema({
+  title: {
+    type: String,
+  },
   products: {
     type: [String],
   },
