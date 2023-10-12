@@ -2,12 +2,16 @@ import { useState, useEffect } from "react";
 import { Delete, Edit, Plus } from "../assets/Icons";
 import CalculatorForm from "./CalculatorForm";
 import AddCalculator from "./AddCalculator";
-import { getCalculators } from "../helpers/calculators";
+import { getCalculators,deleteCalculator } from "../helpers/calculators";
 
 const CalculatorsWrapper = () => {
   const [addFormDisplay, setAddFormDisplay] = useState(false);
   const [calcList, setCalcList] = useState([]);
   const [selectedCalc, updateSelectedCalc] = useState(null);
+  async function deleteCalc(id){
+    let data = await deleteCalculator(id);
+    setCalcList(data);
+  }
   async function getData() {
     let calcList = await getCalculators();
     setCalcList(calcList);
@@ -71,7 +75,7 @@ const CalculatorsWrapper = () => {
                 >
                   <Edit />
                 </button>
-                <button>
+                <button onClick={()=>{deleteCalc(calc._id)}}>
                   <Delete />
                 </button>
               </div>

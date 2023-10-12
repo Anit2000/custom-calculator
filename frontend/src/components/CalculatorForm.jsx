@@ -1,28 +1,30 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Plus } from "../assets/Icons";
 import ProductOverlay from "./ProductOverlay";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 import SizeTable from "./SizeTable";
 import SizeForm from "./SizeForm";
-import { getCalculator } from "../helpers/calculators";
-import { useEffect } from "react";
+import { getCalculator,getSizes } from "../helpers/calculators";
 
 const CalculatorForm = (props) => {
   const [prdOverlayDisplay, setPrdOverlayDisplay] = useState(false);
   const [sizeFormDisplay, setSizeFormDisplay] = useState(false);
+  const [sizes,setSizes] = useState([]);
   const [calculator, setCalculator] = useState(null);
-  console.log(props.id, "here");
+  console.log(calculator)
   useEffect(() => {
     (async () => {
       let { calculator } = await getCalculator(props.id);
+      let {sizes} = await getSizes(props.id);
       setCalculator(calculator);
+      setSizes(sizes)
     })();
     getCalculator(props.id);
   }, []);
 
   return (
     <>
-      {sizeFormDisplay && <SizeForm setSizeFormDisplay={setSizeFormDisplay} />}
+      {sizeFormDisplay && <SizeForm setSizeFormDisplay={setSizeFormDisplay} id={props.id} setSizes={setSizes}/>}
       {prdOverlayDisplay && <ProductOverlay />}
       <div className="calculator-form-wrapper">
         <div class="flex w-full items-center gap-4">
@@ -63,7 +65,7 @@ const CalculatorForm = (props) => {
           </h2>
         </div>
         <div class="grid grid-cols-2 gap-4">
-          {calculator && <SizeTable sizes={calculator.sizes} />}
+          {sizes && <SizeTable calculator={calculator} sizes={sizes} setSizeFormDisplay={setSizeFormDisplay} setSizes={setSizes}/>}
         </div>
       </div>
     </>
