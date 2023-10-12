@@ -30,16 +30,16 @@ const getSettings = async (req, res) => {
   );
   let settings = await Settings.findOne({ user: userId });
   if (settings) {
-    res.send({
+    res.json({
       ok: true,
       domain: settings.domain,
       accessToken: settings.accessToken,
-    });
+    }).status(201)
   } else {
-    res.send({
+    res.json({
       ok: false,
       message: "no existing settings found",
-    });
+    }).status(200)
   }
 };
 module.exports = { saveSettings, getSettings };
