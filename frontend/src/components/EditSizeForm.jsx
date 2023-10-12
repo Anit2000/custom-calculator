@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import { Close, Plus } from "../assets/Icons";
-import { addSizes } from "../helpers/calculators";
+import { Close } from "../assets/Icons";
+import { editSize } from "../helpers/calculators";
 
-const SizeForm = (props) => {
-  const [sizeBlocks, setSizeBlocks] = useState([1]);
-  async function submissionHandler(e){
-    e.preventDefault();
-    let sizesData = Array.from(e.target.querySelectorAll("[data-role='size']")).map(el =>({
-      calculator: props.id,
-      height: el.querySelector('[name="height"]').value,
-      width: el.querySelector('[name="width"]').value,
-      price: el.querySelector('[name="price"]').value,
-    }));
-    let savedData = await addSizes(sizesData);
-    props.setSizes(savedData.sizes);
-    props.setSizeFormDisplay(false)
-  }
+const EditSizeForm = (props) => {
+    function submissionHandler(e){
+        e.preventDefault();
+        let data = 
+            {
+                id: props.size._id,
+                calculator:props.calculator._id,
+                height : e.target.querySelector('[name="height"]').value,
+                width : e.target.querySelector('[name="width"]').value,
+                price : e.target.querySelector('[name="price"]').value,
+            }
+        props.updateSize(data);
+    }
   return (
     <>
       <form
@@ -26,9 +25,7 @@ const SizeForm = (props) => {
         <div className="relative p-10">
           <span
             className="absolute right-0 top-0 translate-y-[-50%] translate-x-[50%] bg-white shadow-sm rounded-full aspect-square p-2 cursor-pointer"
-            onClick={() => {
-              props.setSizeFormDisplay(false);
-            }}
+            onClick={()=>{props.setEditSizeForm(null)}}
           >
             <Close />
           </span>
@@ -45,20 +42,15 @@ const SizeForm = (props) => {
               </div>
             </div>
             <div className="max-h-[210px] overflow-y-auto">
-              {sizeBlocks.map((el, ind) => (
                 <div
-                  key={`row-${ind}`}
-                  className={`grid grid-cols-3 px-4 gap-2 py-2 ${
-                    ind != sizeBlocks.length - 1
-                      ? "border-b-[#e5e7eb] border-b-[1px]"
-                      : ""
-                  }`}
+                  className={`grid grid-cols-3 px-4 gap-2 py-2 `}
                   data-role="size"
                 >
                   <div>
                     <input
                       className="border-[#e5e7eb] border-[1px] max-w-[180px]"
                       type="number"
+                      defaultValue={props.size ? props.size.height : 0 }
                       name="height"
                     />
                   </div>
@@ -67,6 +59,7 @@ const SizeForm = (props) => {
                       className="border-[#e5e7eb]  border-[1px] max-w-[180px]"
                       type="number"
                       name="width"
+                      defaultValue={props.size ? props.size.width : 0}
                     />
                   </div>
                   <div>
@@ -74,29 +67,21 @@ const SizeForm = (props) => {
                       className="border-[#e5e7eb]  border-[1px] max-w-[180px]"
                       type="number"
                       name="price"
+                      defaultValue={props.size ? props.size.price : 0 }
                     />
                   </div>
                 </div>
-              ))}
             </div>
-            <span
-              className="ml-auto flex bg-indigo-600 text-white p-[6px] mr-[10px] rounded-full mb-5 cursor-pointer w-max"
-              onClick={() => {
-                setSizeBlocks((prev) => [...prev, 1]);
-              }}
-            >
-              <Plus />
-            </span>
           </div>
           <button
             type="submit"
             className="flex justify-center items-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-4 w-[130px] mx-auto"
           >
-            Add
+            Update
           </button>
         </div>
       </form>
     </>
   );
 };
-export default SizeForm;
+export default EditSizeForm;
