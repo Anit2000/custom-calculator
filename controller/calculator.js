@@ -1,6 +1,6 @@
 const Shopify = require("shopify-api-node");
 const mongoose = require("mongoose");
-const { Calculator, Size } = require("../models/calculator");
+const { Calculator, Size, Product } = require("../models/calculator");
 const shopify = new Shopify({
   shopName: "my-test-store-it-is",
   accessToken: "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",
@@ -160,6 +160,19 @@ const deleteSize = async (req, res) => {
     let sizesData = await Size.find({ calculator: calculator });
     console.log(sizesData);
     res.json({ ok: true, sizes: sizesData }).status(200);
+  } catch (err) {
+    res.json({ ok: false, message: err.message }).status(400);
+  }
+}
+
+const addNewProductCalc = async (req, res) => {
+  let products = req.body;
+  let calculatorId = products[0].calculator;
+  let savePromises = products.map(el => Product(el).save());
+  try {
+    let savedData = await Promise.all(savePromises);
+    let productsData = await Product.find({ calculator: calculatorId });
+    res.json({ ok: true, products: productsData }).status(200);
   } catch (err) {
     res.json({ ok: false, message: err.message }).status(400);
   }

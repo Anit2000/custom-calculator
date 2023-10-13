@@ -44,6 +44,10 @@ const authenticateUser = (req, res, next) => {
 const loginUser = async (req, res) => {
   const data = req.body;
   let user = await User.findOne({ email: data.email });
+  if (!user) return res.status(401).json({
+    ok: false,
+    message: "User did not match",
+  });
   let verify = bcrypt.compare(data.password, user.password, (err, result) => {
     if (!result) {
       res.status(401).json({

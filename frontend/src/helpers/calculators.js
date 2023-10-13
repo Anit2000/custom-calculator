@@ -64,3 +64,15 @@ export async function getSizes(id) {
   const data = await fetch("/calculators/sizes" + "?id=" + id).then(res => res.json()).then(data => data);
   return data;
 }
+
+export async function addProducts(productsData) {
+  const data = await fetch("/calculators/add-sizes", {
+    method: "POST",
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(productsData)
+  }).then(res => res.json())
+    .then(data => data);
+  return data;
+}

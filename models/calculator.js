@@ -19,6 +19,23 @@ const sizeSchema = new mongoose.Schema({
     required: true
   },
 });
+
+const productSchema = new mongoose.Schema({
+  calculator: {
+    type: mongoose.Types.ObjectId,
+    ref: "Calculator",
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  handle: {
+    type: String,
+    required: true
+  }
+})
+
 const calculatorSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -36,6 +53,7 @@ const calculatorSchema = new mongoose.Schema({
 });
 
 const Calculator = mongoose.model("Calculator", calculatorSchema);
-const Size = mongoose.model("Size", sizeSchema)
+const Size = mongoose.model("Size", sizeSchema);
+const Product = mongoose.model("Product", productSchema);
 
-module.exports = { Calculator, Size };
+module.exports = { Calculator, Size, Product };

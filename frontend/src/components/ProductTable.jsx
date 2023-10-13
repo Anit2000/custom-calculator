@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { Delete, Edit, Scale } from "../assets/Icons";
-import EditSizeForm from "./EditSizeForm";
-import { editSize, deleteSize } from "../helpers/calculators";
+import { Delete, ProductBox } from "../assets/Icons";
 
 const products = [
   {
@@ -18,11 +16,11 @@ const products = [
   },
 ];
 const ProductTable = (props) => {
-  if (products.length == 3) {
+  if (products.length == 0) {
     return (
       <button className="min-w-[160px] border-[#afafaf] hover:border-[#929191] border-dashed border-2 rounded-lg p-4 min-h-[200px] flex flex-col justify-center items-center gap-4">
         <span>
-          <Scale class="w-10 h-10 text-[#929191]" />
+          <ProductBox class="w-10 h-10 text-[#929191]" />
         </span>
         <span className="text-[14px]">Add New Product</span>
       </button>
