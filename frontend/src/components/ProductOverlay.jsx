@@ -7,8 +7,9 @@ import {
 } from "../helpers/getProducts";
 import { useState } from "react";
 
-const ProductOverlay = () => {
+const ProductOverlay = (props) => {
   let [productData, setProductData] = useState([]);
+  const [selectedPrd, setSelectedPrd] = useState([]);
   let [searchQuery, setSearchQuery] = useState("");
   let [page, setPage] = useState(null);
   async function updateData(page_info) {
@@ -28,6 +29,15 @@ const ProductOverlay = () => {
         setProductData([]);
       }
     }
+  }
+  function updateSelectedProduct(el) {
+    let productData = {
+      calculator: props.calc._id,
+      title: el.title,
+      handle: el.handle,
+    };
+
+    setSelectedPrd((prev) => [productData, ...prev]);
   }
   useEffect(() => {
     updateData();
@@ -62,12 +72,29 @@ const ProductOverlay = () => {
                   <img src={el.image?.src} />
                 </div>
                 <p className="text-[14px]">{el.title}</p>
-                <Check class="ml-auto" />
+                <button
+                  className={
+                    selectedPrd.find((prd) => prd.handle == el.handle)
+                      ? "group-btn [&.selected]:text-indigo-800 ml-auto selected"
+                      : "group-btn [&.selected]:text-indigo-800 ml-auto"
+                  }
+                  onClick={() => {
+                    updateSelectedProduct(el);
+                  }}
+                >
+                  <Check />
+                </button>
               </div>
             );
           })}
         </div>
-        {page && <Pagination page={page} updateList={updateData} />}
+        {page && (
+          <Pagination
+            page={page}
+            updateList={updateData}
+            selectedPrd={selectedPrd}
+          />
+        )}
       </div>
     </div>
   );

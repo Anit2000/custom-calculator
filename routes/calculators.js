@@ -10,7 +10,8 @@ const {
   getSizes,
   editSize,
   deleteSize,
-  deleteCalculator
+  deleteCalculator,
+  addNewProductCalc,
 } = require("../controller/calculator");
 
 route.get("/shopify-products", getProducts);
@@ -23,6 +24,6 @@ route.post("/add-sizes", addNewSizes);
 route.post("/edit-size", editSize);
 route.post("/delete-size", deleteSize);
 route.get("/sizes", getSizes);
-
+route.post("/add-products", addNewProductCalc);
 
 module.exports = route;

@@ -32,7 +32,7 @@ const CalculatorForm = (props) => {
           setSizes={setSizes}
         />
       )}
-      {prdOverlayDisplay && <ProductOverlay />}
+      {prdOverlayDisplay && <ProductOverlay calc={calculator} />}
       <div className="calculator-form-wrapper">
         <div class="flex w-full items-center gap-4">
           <button
