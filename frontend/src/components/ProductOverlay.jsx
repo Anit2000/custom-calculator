@@ -12,6 +12,7 @@ const ProductOverlay = (props) => {
   const [selectedPrd, setSelectedPrd] = useState([]);
   let [searchQuery, setSearchQuery] = useState("");
   let [page, setPage] = useState(null);
+  const [selectedProduct,setSelectedProduct] = useState([]);
   async function updateData(page_info) {
     let data = await getShopifyProducts(page_info);
     setProductData(data.products);
