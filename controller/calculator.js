@@ -186,6 +186,15 @@ const addNewProductCalc = async (req, res) => {
     res.json({ ok: false, message: err.message }).status(400);
   }
 };
+const getCalcProducts = async (req, res) => {
+  let { calculator } = req.query;
+  try {
+    let productsData = await Product.find({ calculator: calculator });
+    res.json({ ok: true, products: productsData }).status(200);
+  } catch (err) {
+    res.json({ ok: false, message: err.message }).status(400);
+  }
+}
 module.exports = {
   getProducts,
   searchProduct,
@@ -198,4 +207,5 @@ module.exports = {
   deleteSize,
   deleteCalculator,
   addNewProductCalc,
+  getCalcProducts
 };

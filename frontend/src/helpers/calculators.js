@@ -84,3 +84,11 @@ export async function addProducts(productsData) {
   console.log(data);
   return data;
 }
+
+export async function getCalcProducts(calculator) {
+  const data = await fetch("/calculators/getCalc-products" + "?calculator=" + calculator)
+    .then((res) => res.json())
+    .then((data) => data);
+  console.log(data);
+  return data;
+}
