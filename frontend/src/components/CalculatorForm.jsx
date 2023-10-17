@@ -4,21 +4,24 @@ import ProductOverlay from "./ProductOverlay";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 import SizeTable from "./SizeTable";
 import SizeForm from "./SizeForm";
-import { getCalculator, getSizes } from "../helpers/calculators";
+import { getCalculator, getSizes,getCalcProducts } from "../helpers/calculators";
 import ProductTable from "./ProductTable";
 
 const CalculatorForm = (props) => {
   const [prdOverlayDisplay, setPrdOverlayDisplay] = useState(false);
   const [sizeFormDisplay, setSizeFormDisplay] = useState(false);
+  const [selectedPrd,setSelectedPrds] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [calculator, setCalculator] = useState(null);
-  console.log(calculator);
   useEffect(() => {
     (async () => {
       let { calculator } = await getCalculator(props.id);
       let { sizes } = await getSizes(props.id);
+      let {products} = await getCalcProducts(props.id);
       setCalculator(calculator);
       setSizes(sizes);
+      console.log(products);
+      setSelectedPrds(products)
     })();
     getCalculator(props.id);
   }, []);
@@ -32,7 +35,7 @@ const CalculatorForm = (props) => {
           setSizes={setSizes}
         />
       )}
-      {prdOverlayDisplay && <ProductOverlay calc={calculator} />}
+      {prdOverlayDisplay && <ProductOverlay calc={calculator} selectedPrd={selectedPrd}/>}
       <div className="calculator-form-wrapper">
         <div class="flex w-full items-center gap-4">
           <button

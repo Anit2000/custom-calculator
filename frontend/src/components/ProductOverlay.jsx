@@ -9,7 +9,7 @@ import { useState } from "react";
 
 const ProductOverlay = (props) => {
   let [productData, setProductData] = useState([]);
-  const [selectedPrd, setSelectedPrd] = useState([]);
+  const [selectedPrd, setSelectedPrd] = useState(props.selectedPrd);
   let [searchQuery, setSearchQuery] = useState("");
   let [page, setPage] = useState(null);
   async function updateData(page_info) {
@@ -37,7 +37,11 @@ const ProductOverlay = (props) => {
       handle: el.handle,
     };
 
-    setSelectedPrd((prev) => [productData, ...prev]);
+    setSelectedPrd((prev) =>{
+      let existing = prev.find(prd => prd.handle == el.handle);
+      let arr = existing ? [...prev.slice(0,prev.indexOf(existing)),...prev.slice(prev.indexOf(existing)+1,prev.length)] : [el,...prev];
+      return arr; 
+    });
   }
   useEffect(() => {
     updateData();
