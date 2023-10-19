@@ -166,7 +166,6 @@ const deleteSize = async (req, res) => {
   try {
     let deleteSize = await Size.findByIdAndDelete(id);
     let sizesData = await Size.find({ calculator: calculator });
-    console.log(sizesData);
     res.json({ ok: true, sizes: sizesData }).status(200);
   } catch (err) {
     res.json({ ok: false, message: err.message }).status(400);
@@ -174,12 +173,21 @@ const deleteSize = async (req, res) => {
 };
 
 const addNewProductCalc = async (req, res) => {
-  let products = req.body;
-  console.log(products);
-  let calculatorId = products[0].calculator;
+  let { products, calculatorId } = req.body;
   let savePromises = products.map((el) => Product(el).save());
   try {
     let savedData = await Promise.all(savePromises);
+    let productsData = await Product.find({ calculator: calculatorId });
+    res.json({ ok: true, products: productsData }).status(200);
+  } catch (err) {
+    res.json({ ok: false, message: err.message }).status(400);
+  }
+};
+const deleteProductCalc = async (req, res) => {
+  let { products, calculatorId } = req.body;
+  let deletePromises = products.map((el) => Product.findByIdAndDelete(el._id));
+  try {
+    let deleteData = await Promise.all(deletePromises);
     let productsData = await Product.find({ calculator: calculatorId });
     res.json({ ok: true, products: productsData }).status(200);
   } catch (err) {
@@ -194,7 +202,7 @@ const getCalcProducts = async (req, res) => {
   } catch (err) {
     res.json({ ok: false, message: err.message }).status(400);
   }
-}
+};
 module.exports = {
   getProducts,
   searchProduct,
@@ -207,5 +215,6 @@ module.exports = {
   deleteSize,
   deleteCalculator,
   addNewProductCalc,
-  getCalcProducts
+  getCalcProducts,
+  deleteProductCalc,
 };

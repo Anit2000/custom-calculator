@@ -14,8 +14,12 @@ export default function Pagination(props) {
       <button
         className="mr-auto flex justify-center items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-2"
         onClick={() => {
-          console.log(props.selectedPrd);
-          addProducts(props.selectedPrd);
+          addProducts({
+            calculatorId: props.calculator._id,
+            products: props.selectedPrd,
+          });
+          props.setSelectedPrd(props.selectedPrd);
+          props.setPrdOverlayDisplay(false);
         }}
       >
         Update

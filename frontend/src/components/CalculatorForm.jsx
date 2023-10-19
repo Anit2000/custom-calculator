@@ -4,24 +4,27 @@ import ProductOverlay from "./ProductOverlay";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 import SizeTable from "./SizeTable";
 import SizeForm from "./SizeForm";
-import { getCalculator, getSizes,getCalcProducts } from "../helpers/calculators";
+import {
+  getCalculator,
+  getSizes,
+  getCalcProducts,
+} from "../helpers/calculators";
 import ProductTable from "./ProductTable";
 
 const CalculatorForm = (props) => {
   const [prdOverlayDisplay, setPrdOverlayDisplay] = useState(false);
   const [sizeFormDisplay, setSizeFormDisplay] = useState(false);
-  const [selectedPrd,setSelectedPrds] = useState([]);
+  const [selectedPrd, setSelectedPrds] = useState([]);
   const [sizes, setSizes] = useState([]);
   const [calculator, setCalculator] = useState(null);
   useEffect(() => {
     (async () => {
       let { calculator } = await getCalculator(props.id);
       let { sizes } = await getSizes(props.id);
-      let {products} = await getCalcProducts(props.id);
+      let { products } = await getCalcProducts(props.id);
       setCalculator(calculator);
       setSizes(sizes);
-      console.log(products);
-      setSelectedPrds(products)
+      setSelectedPrds(products);
     })();
     getCalculator(props.id);
   }, []);
@@ -35,7 +38,14 @@ const CalculatorForm = (props) => {
           setSizes={setSizes}
         />
       )}
-      {prdOverlayDisplay && <ProductOverlay calc={calculator} selectedPrd={selectedPrd}/>}
+      {prdOverlayDisplay && selectedPrd && (
+        <ProductOverlay
+          calc={calculator}
+          selectedPrd={selectedPrd}
+          setPrdOverlayDisplay={setPrdOverlayDisplay}
+          setSelectedPrds={setSelectedPrds}
+        />
+      )}
       <div className="calculator-form-wrapper">
         <div class="flex w-full items-center gap-4">
           <button
@@ -83,7 +93,14 @@ const CalculatorForm = (props) => {
               setSizes={setSizes}
             />
           )}
-          <ProductTable />
+          {selectedPrd && (
+            <ProductTable
+              calculator={calculator}
+              products={selectedPrd}
+              setPrdOverlayDisplay={setPrdOverlayDisplay}
+              setSelectedPrds={setSelectedPrds}
+            />
+          )}
         </div>
       </div>
     </>

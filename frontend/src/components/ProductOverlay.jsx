@@ -37,10 +37,15 @@ const ProductOverlay = (props) => {
       handle: el.handle,
     };
 
-    setSelectedPrd((prev) =>{
-      let existing = prev.find(prd => prd.handle == el.handle);
-      let arr = existing ? [...prev.slice(0,prev.indexOf(existing)),...prev.slice(prev.indexOf(existing)+1,prev.length)] : [el,...prev];
-      return arr; 
+    setSelectedPrd((prev) => {
+      let existing = prev.find((prd) => prd.handle == productData.handle);
+      let arr = existing
+        ? [
+            ...prev.slice(0, prev.indexOf(existing)),
+            ...prev.slice(prev.indexOf(existing) + 1, prev.length),
+          ]
+        : [productData, ...prev];
+      return arr;
     });
   }
   useEffect(() => {
@@ -92,11 +97,14 @@ const ProductOverlay = (props) => {
             );
           })}
         </div>
-        {page && (
+        {page && props.selectedPrd && (
           <Pagination
             page={page}
+            calculator={props.calc}
             updateList={updateData}
+            setPrdOverlayDisplay={props.setPrdOverlayDisplay}
             selectedPrd={selectedPrd}
+            setSelectedPrd={props.setSelectedPrds}
           />
         )}
       </div>
