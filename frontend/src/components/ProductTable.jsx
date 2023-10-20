@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import { Delete, ProductBox } from "../assets/Icons";
 import { deleteProduct } from "../helpers/calculators";
+import CalculatorContext from "../helpers/calcContext";
 
 const ProductTable = (props) => {
+  const {calculator,setSelectedProducts,selectedProducts} = useContext(CalculatorContext);
   async function updateData(el) {
     let data = {
-      calculatorId: props.calculator._id,
+      calculatorId: calculator._id,
       products: [el],
     };
-    console.log(data);
     let prdData = await deleteProduct(data);
-    props.setSelectedPrds(prdData.products);
+    setSelectedProducts(prdData.products);
   }
   if (props.products.length == 0) {
     return (
@@ -36,11 +37,11 @@ const ProductTable = (props) => {
           </div>
         </div>
         <div className="max-h-[300px] overflow-y-auto">
-          {props.products.map((el, ind) => (
+          {selectedProducts.map((el, ind) => (
             <div
               key={el._id}
               className={`grid grid-cols-[auto_1fr] px-4 py-2 ${
-                ind != props.products.length - 1
+                ind != selectedProducts.length - 1
                   ? "border-b-[#e5e7eb] border-b-[1px]"
                   : ""
               }`}

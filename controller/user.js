@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const Settings = require("../models/settings");
 
 const createToken = (id) => {
   let token = jwt.sign(
@@ -26,22 +27,25 @@ const authenticateUser = (req, res, next) => {
     process.env.SECRET_TOKEN,
     async function (err, decoded) {
       if (err) {
-        res.json({
-          err: err.message,
-        });
+        req.user = {
+          authenticateUser: false
+        };
+        next();
       } else {
-        let user = await User.findById(decoded.data);
-        res
-          .json({
-            ok: true,
-            email: user.email,
-          })
-          .status(201);
+        let userData = await User.findById(decoded.data);
+        let settings = await Settings.findOne({ user: userData._id });
+        req.user = {
+          authenticateUser: true,
+          data: { ...userData },
+          settings,
+        };
+        next();
       }
     }
   );
 };
 const loginUser = async (req, res) => {
+  console.log("logging in")
   const data = req.body;
   let user = await User.findOne({ email: data.email });
   if (!user) return res.status(401).json({

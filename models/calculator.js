@@ -40,15 +40,10 @@ const calculatorSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  products: {
-    type: [String],
-  },
-  sizes: {
-    type: [sizeSchema],
-  },
   user: {
     type: mongoose.Types.ObjectId,
     ref: "User",
+    required: true
   },
 });
 

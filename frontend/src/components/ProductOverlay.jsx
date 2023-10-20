@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState,useContext } from "react";
 import { Search, Check } from "../assets/Icons";
 import Pagination from "./Pagination";
 import {
   getShopifyProducts,
   searchShopifyProduct,
 } from "../helpers/getProducts";
-import { useState } from "react";
+import CalculatorContext from "../helpers/calcContext";
 
 const ProductOverlay = (props) => {
+  const {selectedProducts,setSelectedProducts,calculator} = useContext(CalculatorContext);
   let [productData, setProductData] = useState([]);
-  const [selectedPrd, setSelectedPrd] = useState(props.selectedPrd);
   let [searchQuery, setSearchQuery] = useState("");
   let [page, setPage] = useState(null);
   async function updateData(page_info) {
@@ -32,12 +32,12 @@ const ProductOverlay = (props) => {
   }
   function updateSelectedProduct(el) {
     let productData = {
-      calculator: props.calc._id,
+      calculator: calculator._id,
       title: el.title,
       handle: el.handle,
     };
 
-    setSelectedPrd((prev) => {
+    setSelectedProducts((prev) => {
       let existing = prev.find((prd) => prd.handle == productData.handle);
       let arr = existing
         ? [
@@ -83,7 +83,7 @@ const ProductOverlay = (props) => {
                 <p className="text-[14px]">{el.title}</p>
                 <button
                   className={
-                    selectedPrd.find((prd) => prd.handle == el.handle)
+                    selectedProducts.find((prd) => prd.handle == el.handle)
                       ? "group-btn [&.selected]:text-indigo-800 ml-auto selected"
                       : "group-btn [&.selected]:text-indigo-800 ml-auto"
                   }
@@ -97,14 +97,11 @@ const ProductOverlay = (props) => {
             );
           })}
         </div>
-        {page && props.selectedPrd && (
+        {page && (
           <Pagination
             page={page}
-            calculator={props.calc}
             updateList={updateData}
             setPrdOverlayDisplay={props.setPrdOverlayDisplay}
-            selectedPrd={selectedPrd}
-            setSelectedPrd={props.setSelectedPrds}
           />
         )}
       </div>
