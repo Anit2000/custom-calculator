@@ -15,7 +15,9 @@ const {
   getCalcProducts,
   deleteProductCalc,
 } = require("../controller/calculator");
+const { authenticateUser } = require("../controller/user");
 
+route.use("/", authenticateUser);
 route.get("/shopify-products", getProducts);
 route.get("/search-product", searchProduct);
 route.get("/list-calculator", listCalculators);

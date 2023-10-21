@@ -1,12 +1,13 @@
 const Shopify = require("shopify-api-node");
 const mongoose = require("mongoose");
 const { Calculator, Size, Product } = require("../models/calculator");
-const shopify = new Shopify({
-  shopName: "my-test-store-it-is",
-  accessToken: "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",
-});
+
+function createShopifyInstance(shopName, accessToken) {
+  return new Shopify({ shopName, accessToken })
+}
 const getProducts = async (req, res) => {
   let page = req.query.page;
+  let shopify = createShopifyInstance(req.user.settings.domain, req.user.settings.accessToken)
   try {
     const products = await shopify.product.list({
       limit: 10,
@@ -60,8 +61,9 @@ const searchProduct = async (req, res) => {
 
 const addNewCalculator = async (req, res) => {
   const { title } = req.body;
+  const userId = req.user.data._doc._id;
   try {
-    let data = await Calculator({ title: title }).save();
+    let data = await Calculator({ title: title, user: userId }).save();
     res.json(data).status(200);
   } catch (err) {
     res
@@ -94,8 +96,9 @@ const deleteCalculator = async (req, res) => {
 };
 
 const listCalculators = async (req, res) => {
+  const userId = req.user.data._doc._id.toHexString();
   try {
-    let calculators = await Calculator.find({});
+    let calculators = await Calculator.find({ user: userId });
     res.json(calculators).status(200);
   } catch (err) {
     res
@@ -110,7 +113,6 @@ const getCalculator = async (req, res) => {
   let id = new mongoose.Types.ObjectId(req.query.id);
   try {
     let calculator = await Calculator.findById(id);
-    console.log(calculator);
     res
       .json({
         ok: true,

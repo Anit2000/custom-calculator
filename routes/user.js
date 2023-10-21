@@ -6,7 +6,6 @@ const {
   loginUser,
 } = require("../controller/user");
 const { saveSettings, getSettings } = require("../controller/settings");
-
 router.post("/register", createUser);
 router.post("/login", loginUser);
 router.post("/saveSettings", saveSettings);

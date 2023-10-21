@@ -1,8 +1,10 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import { addProducts } from "../helpers/calculators";
-import { useState } from "react";
+import { useState,useContext } from "react";
+import CalculatorContext from "../helpers/calcContext";
 
-export default function Pagination(props) {
+const Pagination = (props) => {
+  const {calculator,selectedProducts,setSelectedProducts} = useContext(CalculatorContext);
   let { page, updateList } = props;
   let [updatePage, setUpdatePage] = useState(page);
   async function updatePrdList(page_info) {
@@ -10,15 +12,15 @@ export default function Pagination(props) {
     setUpdatePage(pageVal);
   }
   return (
-    <div className="flex items-center justify-end border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-auto">
+    <div className="flex pagination items-center justify-end border-t border-gray-200 bg-white px-4 py-3 sm:px-6 mt-auto">
       <button
         className="mr-auto flex justify-center items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 gap-2"
         onClick={() => {
           addProducts({
-            calculatorId: props.calculator._id,
-            products: props.selectedPrd,
+            calculatorId: calculator._id,
+            products: selectedProducts,
           });
-          props.setSelectedPrd(props.selectedPrd);
+          setSelectedProducts(selectedProducts);
           props.setPrdOverlayDisplay(false);
         }}
       >
@@ -58,3 +60,4 @@ export default function Pagination(props) {
     </div>
   );
 }
+export default Pagination;

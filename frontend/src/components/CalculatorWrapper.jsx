@@ -62,7 +62,6 @@ const CalculatorsWrapper = () => {
             <div className="flex min-w-0 gap-x-4">
               <div className="min-w-0 flex-auto">
                 <p className="mt-1 truncate text-xs leading-5 text-gray-500">
-                  {calc.products.length}
                 </p>
               </div>
             </div>
