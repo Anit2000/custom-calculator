@@ -35,6 +35,7 @@ const ProductOverlay = (props) => {
       calculator: calculator._id,
       title: el.title,
       handle: el.handle,
+      productId: el.id
     };
 
     setSelectedProducts((prev) => {

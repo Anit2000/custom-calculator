@@ -1,5 +1,6 @@
 const Shopify = require("shopify-api-node");
 const Settings = require("../models/settings");
+const randomstring = require("randomstring");
 
 async function createShopifyInstance(userId) {
     let settingsData = await Settings.find({ user: userId });
@@ -9,12 +10,12 @@ async function createShopifyInstance(userId) {
 async function createVariant(productId, price, userId) {
     let shopify = await createShopifyInstance(userId);
     try {
-
-        let product = await shopify.productVariant.create(productId, {
-            price: '100.00',
-            title: "tttt",
-        });
-        console.log(product)
+        let variantTitle = 'calculator-' + randomstring.generate(7);
+        let variant = await shopify.productVariant.create(`${productId}`, {
+            "price": `${Number(price).toFixed(2)}`,
+            "option1": variantTitle
+        })
+        return variant
     } catch (err) {
         console.log(err);
     }
