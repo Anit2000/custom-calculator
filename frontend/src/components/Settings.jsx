@@ -37,11 +37,11 @@ const Settings = () => {
   return (
     <div className="flex flex-col gap-4">
       <Input
-        label="Domain"
+        label="Store name"
         name="domain"
         type="text"
         value={domain}
-        placeholder="Enter store domain"
+        placeholder="Enter store name"
         onchange={(e) => {
           setDomain(e.target.value);
         }}

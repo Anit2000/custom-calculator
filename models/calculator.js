@@ -33,6 +33,10 @@ const productSchema = new mongoose.Schema({
   handle: {
     type: String,
     required: true
+  },
+  productId: {
+    type: String,
+    required: true
   }
 })
 
